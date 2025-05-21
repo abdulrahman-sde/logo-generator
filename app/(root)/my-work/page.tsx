@@ -1,10 +1,15 @@
 
 import UserLogoCard from "@/components/my-work/user-logo-card";
 import EmptyState from "@/components/my-work/empty-state";
-import { sampleUserLogos } from "@/constants/constants";
+import Logo from "@/models/logoModel";
+import { auth } from "@clerk/nextjs/server";
+import dbConnect from "@/lib/mongodb";
 
-export default function MyWorkPage() {
+export default async function MyWorkPage() {
   // Fetch user logos from the server or use a mock data
+  await dbConnect()
+  const { userId } = await auth();
+  const logos=await Logo.find({createdBy:userId})
 
   return (
     <div className="container px-4 py-12 mx-auto sm:px-6 pt-32 pb-16">
@@ -17,12 +22,12 @@ export default function MyWorkPage() {
         </p>
 
         <div className="mt-10">
-          {sampleUserLogos.length === 0 ? (
+          {logos.length === 0 ? (
             <EmptyState />
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {sampleUserLogos.map((logo) => (
-                <UserLogoCard key={logo.id} logo={logo} />
+              {logos.map((logo) => (
+                <UserLogoCard key={logo._id} imageUrl={logo.imageUrl} createdAt={logo.createdAt} />
               ))}
             </div>
           )}

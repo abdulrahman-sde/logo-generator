@@ -59,7 +59,7 @@ export default function GeneratePage() {
           Describe your brand and let AI create the perfect logo for you.
         </p>
 
-        <div className="grid gap-10 mt-10 lg:grid-cols-2">
+        <div className="grid grid-col-1 gap-10 mt-10 lg:grid-cols-2 max-w-7xl mx-auto h-auto" >
           <LogoForm
             handleGenerate={handleGenerate}
             isGenerating={isGenerating}

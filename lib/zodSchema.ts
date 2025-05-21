@@ -14,8 +14,8 @@ export const formSchema = z.object({
     .min(10, {
       message: "Description must be at least 10 characters.",
     })
-    .max(500, {
-      message: "Description must not exceed 500 characters.",
+    .max(1000, {
+      message: "Description must not exceed 1000 characters.",
     }),
   category: z.string({
     required_error: "Please select a category.",
