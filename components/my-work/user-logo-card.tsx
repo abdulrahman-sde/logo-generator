@@ -13,8 +13,6 @@ interface UserLogoCardProps {
   
     imageUrl:string,
     createdAt:Date
-
-  
 }
 
 export default function UserLogoCard({ imageUrl,createdAt }: UserLogoCardProps) {
