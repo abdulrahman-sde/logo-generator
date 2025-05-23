@@ -14,10 +14,6 @@ export default function GeneratePage() {
     try {
       setIsGenerating(true);
       const structuredPrompt = await structurePrompt({ prompt });
-
-
-      // const queryParams = new URLSearchParams({ });
-
       const encodedPrompt = encodeURIComponent(structuredPrompt!);
       const url=`https://image.pollinations.ai/prompt/${encodedPrompt}`
       

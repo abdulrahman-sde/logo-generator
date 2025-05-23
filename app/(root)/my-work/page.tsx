@@ -1,15 +1,10 @@
 
-import UserLogoCard from "@/components/my-work/user-logo-card";
-import EmptyState from "@/components/my-work/empty-state";
-import Logo from "@/models/logoModel";
-import { auth } from "@clerk/nextjs/server";
-import dbConnect from "@/lib/mongodb";
+import LogosList from '@/components/my-work/logos-list'
+import { Suspense } from 'react';
 
 export default async function MyWorkPage() {
   // Fetch user logos from the server or use a mock data
-  await dbConnect()
-  const { userId } = await auth();
-  const logos=await Logo.find({createdBy:userId})
+  
 
   return (
     <div className="container px-4 py-12 mx-auto sm:px-6 pt-32 pb-16">
@@ -21,17 +16,9 @@ export default async function MyWorkPage() {
           Manage and download your generated logos.
         </p>
 
-        <div className="mt-10">
-          {logos.length === 0 ? (
-            <EmptyState />
-          ) : (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {logos.map((logo) => (
-                <UserLogoCard key={logo._id} imageUrl={logo.imageUrl} createdAt={logo.createdAt} />
-              ))}
-            </div>
-          )}
-        </div>
+        <Suspense>
+          <LogosList />
+        </Suspense>
       </div>
     </div>
   );
