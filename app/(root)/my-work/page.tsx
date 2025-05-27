@@ -16,7 +16,7 @@ export default async function MyWorkPage() {
           Manage and download your generated logos.
         </p>
 
-        <Suspense>
+        <Suspense fallback="loading...">
           <LogosList />
         </Suspense>
       </div>
