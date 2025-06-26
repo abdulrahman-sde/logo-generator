@@ -2,7 +2,7 @@
 import LogosList from '@/components/my-work/logos-list'
 import { Suspense } from 'react';
 
-export default async function MyWorkPage() {
+export default  function MyWorkPage() {
   // Fetch user logos from the server or use a mock data
   
 
