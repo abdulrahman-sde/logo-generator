@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import LogoForm from "@/components/generate/logo-form";
 import GeneratedLogo from "@/components/generate/generated-logo";
 import type { Logo } from "@/lib/types";
@@ -40,6 +41,18 @@ export default function GeneratePage() {
 
     } catch (err) {
       console.error("Error generating logo:", err);
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      if (
+        errorMessage.includes("429") ||
+        errorMessage.toLowerCase().includes("quota") ||
+        errorMessage.toLowerCase().includes("rate-limit") ||
+        errorMessage.toLowerCase().includes("rate limit") ||
+        errorMessage.toLowerCase().includes("resource_exhausted")
+      ) {
+        toast.error("API quota exceeded. Please try again in a few moments.");
+      } else {
+        toast.error("Failed to generate logo. Please try again.");
+      }
     } finally {
       setIsGenerating(false);
     }
