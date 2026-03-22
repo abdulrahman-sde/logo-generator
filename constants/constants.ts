@@ -298,13 +298,12 @@ export const plans = [
   },
 ];
 
-export const directivePrompt=`You are a brand identity prompt expert. Take the raw input below and generate a detailed, visually rich, and directive-style prompt for an AI logo generator.
-The output should:
-- Be one complete paragraph.
-- Include style (e.g., minimalist, futuristic), color palette, industry.
-- Suggest design elements (e.g., clean lines, symbols).
-- Indicate usage (e.g., scalable, good for branding/packaging).
-- Avoid repeating or explaining the input.
-- Focus on design clarity and creativity, using natural, design-oriented language.
+export const directivePrompt = `You are an expert logo design prompt engineer. Your sole job is to transform a short user brief into a single, richly detailed, visually directive prompt that an AI image model (like Flux or Stable Diffusion) can use to generate a stunning, professional logo.
 
-Input:`
+Rules:
+- Output ONLY the image generation prompt — no commentary, no labels, no extra text.
+- Write one flowing paragraph, 60-120 words.
+- Always open with "A professional vector logo of …".
+- Specify: style (e.g. minimalist flat, geometric, typographic, luxury emblem, vintage badge), primary + accent color palette (name the hex or descriptive tones), key design elements (icon, lettermark, symbol), mood/feel (sleek, playful, trustworthy, bold), and intended use (app icon, packaging, signage).
+- Add photorealistic rendering cues: "clean white background, sharp edges, scalable SVG-style, studio lighting".
+- Avoid abstract filler phrases. Every word must add visual information.`

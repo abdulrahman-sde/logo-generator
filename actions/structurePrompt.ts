@@ -1,42 +1,43 @@
 "use server";
 
+import Groq from "groq-sdk";
 import { directivePrompt } from "@/constants/constants";
 
+if (!process.env.GROQ_API_KEY) {
+  throw new Error("GROQ_API_KEY environment variable is not set");
+}
+
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+
 export async function structurePrompt({ prompt }: { prompt: string }) {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-
-  if (process.env.POLLINATIONS_API_KEY) {
-    headers["Authorization"] = `Bearer ${process.env.POLLINATIONS_API_KEY}`;
-  }
-
-  const response = await fetch("https://text.pollinations.ai/openai", {
-    method: "POST",
-    headers,
-    body: JSON.stringify({
-      model: "openai",
+  try {
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
       messages: [
         {
+          role: "system",
+          content: directivePrompt,
+        },
+        {
           role: "user",
-          content: directivePrompt + prompt,
+          content: prompt,
         },
       ],
-    }),
-  });
+      temperature: 0.7,
+      max_tokens: 512,
+    });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(
-      `Text generation failed: ${response.status} - ${errorText}`
-    );
+    const text = completion.choices[0]?.message?.content;
+    if (!text) {
+      throw new Error("Unexpected response format from Groq API");
+    }
+    console.log(text);
+    return text;
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    if (message.includes("429") || message.toLowerCase().includes("rate limit")) {
+      throw new Error("429: Groq API rate limit exceeded. Please try again shortly.");
+    }
+    throw new Error(`Groq API error: ${message}`);
   }
-
-  const data = await response.json();
-  const text: string | undefined = data?.choices?.[0]?.message?.content;
-  if (!text) {
-    throw new Error("Unexpected response format from text generation API");
-  }
-  console.log(text);
-  return text;
 }
