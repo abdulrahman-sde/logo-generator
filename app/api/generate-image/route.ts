@@ -6,9 +6,9 @@ const DEFAULT_HEIGHT = "768";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const encodedPrompt = searchParams.get("prompt");
+  const prompt = searchParams.get("prompt");
 
-  if (!encodedPrompt) {
+  if (!prompt) {
     return NextResponse.json({ error: "Missing prompt parameter" }, { status: 400 });
   }
 
@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
   const height = searchParams.get("height") ?? DEFAULT_HEIGHT;
 
   const params = new URLSearchParams({ model, width, height, nologo: "true" });
-  const url = `https://gen.pollinations.ai/image/${encodedPrompt}?${params.toString()}`;
+  const url = `https://gen.pollinations.ai/image/${encodeURIComponent(prompt)}?${params.toString()}`;
 
   try {
     const response = await fetch(url, {
