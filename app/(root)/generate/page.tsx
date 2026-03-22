@@ -16,9 +16,8 @@ export default function GeneratePage() {
       setIsGenerating(true);
       const structuredPrompt = await structurePrompt({ prompt });
       const encodedPrompt = encodeURIComponent(structuredPrompt!);
-      const params = new URLSearchParams({ model: "flux", width: "768", height: "768" });
-      const url = `https://gen.pollinations.ai/image/${encodedPrompt}?${params.toString()}`;
-      
+      const url = `/api/generate-image?prompt=${encodedPrompt}`;
+
       const response = await fetch(url);
     if (!response.ok) {
       const errorText = await response.text(); // Get error details if possible
