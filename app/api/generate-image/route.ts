@@ -16,14 +16,20 @@ export async function GET(request: NextRequest) {
   const width = searchParams.get("width") ?? DEFAULT_WIDTH;
   const height = searchParams.get("height") ?? DEFAULT_HEIGHT;
 
-  const params = new URLSearchParams({ model, width, height, nologo: "true" });
-  const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?${params.toString()}`;
-
-  const fetchOptions: RequestInit = {};
   const apiKey = process.env.POLLINATIONS_API_KEY;
-  if (apiKey) {
-    fetchOptions.headers = { Authorization: `Bearer ${apiKey}` };
+  if (!apiKey) {
+    return NextResponse.json(
+      { error: "Server configuration error: POLLINATIONS_API_KEY is not set." },
+      { status: 503 }
+    );
   }
+
+  const params = new URLSearchParams({ model, width, height, nologo: "true" });
+  const url = `https://gen.pollinations.ai/image/${encodeURIComponent(prompt)}?${params.toString()}`;
+
+  const fetchOptions: RequestInit = {
+    headers: { Authorization: `Bearer ${apiKey}` },
+  };
 
   try {
     const response = await fetch(url, fetchOptions);

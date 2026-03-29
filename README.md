@@ -2,6 +2,18 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Prerequisites
+
+This project uses the [Pollinations AI](https://pollinations.ai) API for image generation. You must provide an API key before the app will work.
+
+1. Copy `.env.example` to `.env.local`:
+   ```bash
+   cp .env.example .env.local
+   ```
+2. Replace `your_pollinations_api_key_here` with your actual Pollinations API key in `.env.local`.
+
+### Running the development server
+
 First, run the development server:
 
 ```bash
