@@ -40,14 +40,21 @@ export default function LogoForm({ handleGenerate, isGenerating }: LogoFormProps
   }, [selectedColors, form])
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Construct the prompt string
+    // Map color IDs to descriptive labels with hex values for better AI prompt quality
+    const colorDescriptions = values.colorScheme
+      .map((id) => {
+        const found = colors.find((c) => c.id === id)
+        return found ? `${found.label} (${found.color})` : id
+      })
+      .join(", ")
+
     const prompt = `
       Create a logo with the following details:
       - Title: ${values.title}
       - Description: ${values.description}
       - Category: ${values.category}
       - Style: ${values.style}
-      - Colors: ${values.colorScheme.join(", ")}
+      - Colors: ${colorDescriptions}
     `
     console.log("Generated Prompt:", prompt)
     handleGenerate(prompt.trim())
