@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const DEFAULT_MODEL = "flux-realism";
+const DEFAULT_MODEL = "flux";
 const DEFAULT_WIDTH = "1024";
 const DEFAULT_HEIGHT = "1024";
 
