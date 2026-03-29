@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
   }
 
   const params = new URLSearchParams({ model, width, height, nologo: "true" });
-  const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?${params.toString()}`;
+  const url = `https://gen.pollinations.ai/image/${encodeURIComponent(prompt)}?${params.toString()}`;
 
   const fetchOptions: RequestInit = {
     headers: { Authorization: `Bearer ${apiKey}` },
