@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const DEFAULT_MODEL = "flux";
-const DEFAULT_WIDTH = "768";
-const DEFAULT_HEIGHT = "768";
+const DEFAULT_MODEL = "flux-realism";
+const DEFAULT_WIDTH = "1024";
+const DEFAULT_HEIGHT = "1024";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -12,27 +12,15 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Missing prompt parameter" }, { status: 400 });
   }
 
-  const apiKey = process.env.POLLINATIONS_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json(
-      { error: "POLLINATIONS_API_KEY environment variable is not set" },
-      { status: 500 }
-    );
-  }
-
   const model = searchParams.get("model") ?? DEFAULT_MODEL;
   const width = searchParams.get("width") ?? DEFAULT_WIDTH;
   const height = searchParams.get("height") ?? DEFAULT_HEIGHT;
 
   const params = new URLSearchParams({ model, width, height, nologo: "true" });
-  const url = `https://gen.pollinations.ai/image/${encodeURIComponent(prompt)}?${params.toString()}`;
+  const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?${params.toString()}`;
 
   try {
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-      },
-    });
+    const response = await fetch(url);
 
     if (!response.ok) {
       const errorText = await response.text();
